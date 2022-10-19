@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\Tenant;
 use App\Models\User;
+use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
@@ -83,6 +85,17 @@ class AuthController extends Controller
     public function user(Request $request)
     {
         $user =  $request->user();
-        return $user;
+        return response(["success" => true, "data" => $user, "errorMessage" => null]);
+    }
+
+
+    /**
+     * Get currently logged in user.
+     */
+    public function logout(Request $request)
+    {
+        $request->user()->tokens()->delete();
+
+        return response(["success" => true, "data" => true, "errorMessage" => null]);
     }
 }
